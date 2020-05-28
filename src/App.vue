@@ -50,7 +50,7 @@ export default class App extends Vue {
             x.folders.length > 0 ||
             x.files.length > 0
         ),
-      files: folder.files.filter(x => x.name.includes(filter))
+      files: folder.files.filter(x => x.name.toLowerCase().includes(filter.toLowerCase()))
     };
   }
 }
