@@ -29,11 +29,11 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from "vue-property-decorator";
+import { ref, reactive, defineComponent } from "@vue/composition-api";
+import { useFolderManager, useModal, useLocalStorage, useFolderSearch } from "@/topics";
+import { FolderInfo, FileInfo } from "@/models";
 import Folder from "./Folder.vue";
 import Modal from "./Modal.vue";
-import { useFolderManager, useModal, usePersister, useFolderSearch } from "@/topics";
-import { FolderInfo, data, FileInfo } from "@/models";
-import { ref, reactive, defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
   components: {
@@ -49,7 +49,7 @@ export default defineComponent({
     });
 
     // Use persister to keep file structure in browser
-    usePersister("folders", rootFolder);
+    useLocalStorage("folders", rootFolder);
 
     // Use a modal
     let modal = useModal<string>();
@@ -78,7 +78,7 @@ export default defineComponent({
     };
 
     // Use folder search
-    let search = useFolderSearch(rootFolder);
+    let search = useFolderSearch(rootFolder.value);
 
     // Expose to the component
     return {

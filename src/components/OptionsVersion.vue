@@ -130,7 +130,10 @@ export default class OptionsVersion extends Vue {
       return root;
     }
     for (let folder of root.folders) {
-      return this.findParentFolderOfFolder(root, folder);
+      let found = this.findParentFolderOfFolder(folder, toFind);
+      if (found) {
+        return found;
+      }
     }
     return null;
   }

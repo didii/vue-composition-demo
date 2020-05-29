@@ -1,11 +1,15 @@
 import { FileInfo, FolderInfo } from '@/models';
 
+/**
+ * Exposes functionality to add files and remove folders or files from the given parameter.
+ * @param rootFolder The folder to manage
+ */
 export function useFolderManager(rootFolder: FolderInfo) {
     let addFile = (file: FileInfo, to: FolderInfo) => {
         let found = findFolder(rootFolder!, to);
         if (found) {
             found.files.push(file);
-            found.files.sort((a,b) => a.name.localeCompare(b.name));
+            found.files.sort((a, b) => a.name.localeCompare(b.name));
         }
     }
     let removeFile = (file: FileInfo) => {
@@ -42,13 +46,16 @@ function findFolder(root: FolderInfo, toFind: FolderInfo): FolderInfo | null {
 
 function findParentFolderOfFolder(root: FolderInfo, toFind: FolderInfo): FolderInfo | null {
     if (root.folders.some(x => x.name === toFind.name)) {
-      return root;
+        return root;
     }
     for (let folder of root.folders) {
-      return findParentFolderOfFolder(root, folder);
+        let found = findParentFolderOfFolder(folder, toFind);
+        if (found) {
+            return found;
+        }
     }
     return null;
-  }
+}
 
 
 function findParentFolderOfFile(root: FolderInfo, toFind: FileInfo): FolderInfo | null {
