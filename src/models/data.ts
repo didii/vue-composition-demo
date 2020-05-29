@@ -1,12 +1,4 @@
-export interface FolderInfo {
-    name: string;
-    folders: FolderInfo[];
-    files: FileInfo[];
-}
-
-export interface FileInfo {
-    name: string;
-}
+import { FolderInfo } from './folder-info';
 
 export let data: FolderInfo = {
     name: 'composition-demo',
@@ -38,14 +30,31 @@ export let data: FolderInfo = {
                     name: 'components',
                     folders: [],
                     files: [
-                        { name: 'Folder.vue' }
+                        { name: 'CompositionVersion.vue' },
+                        { name: 'Folder.vue' },
+                        { name: 'Modal.vue' },
+                        { name: 'OptionsVersion.vue' },
                     ],
                 },
                 {
                     name: 'models',
                     folders: [],
                     files: [
-                        { name: 'resource.ts' }
+                        { name: 'data.ts' },
+                        { name: 'file-info.ts' },
+                        { name: 'folder-info.ts' },
+                        { name: 'index.ts' },
+                    ],
+                },
+                {
+                    name: 'topics',
+                    folders: [],
+                    files: [
+                        { name: 'folder-manager.ts' },
+                        { name: 'folder-search.ts' },
+                        { name: 'index.ts' },
+                        { name: 'modal.ts' },
+                        { name: 'persister.ts' },
                     ],
                 },
             ],
@@ -68,4 +77,4 @@ export let data: FolderInfo = {
         { name: 'tsconfig.json' },
         { name: 'vue.config.js' },
     ],
-}
+};

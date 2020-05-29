@@ -1,79 +1,38 @@
 <template>
   <div id="app" class="container">
-    <h1>Folder manager</h1>
-    <div class="row">
-      <div class="col-12">
-        <input v-model="filter" type="text" class="form-control" placeholder="Search..." />
-      </div>
-    </div>
-    <hr/>
-    <div class="row">
-      <div class="col-12">
-        <div class="folder-view">
-          <h2>
-            <i class="far fa-folder-open"></i>
-            {{rootFolder.name}}
-          </h2>
-          <folder :folderInfo="filteredFolderInfo"></folder>
-        </div>
-      </div>
-    </div>
+    <button @click="swapVersion()" class="btn btn-primary">Swap</button>&nbsp;
+    <button @click="resetData()" class="btn btn-info">Reset</button>
+    <options-version v-if="useOptions"></options-version>
+    <composition-version v-else></composition-version>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import Folder from "./components/Folder.vue";
-import { FolderInfo, data } from "./models/resource";
+import { Vue, Component, Watch } from "vue-property-decorator";
+import OptionsVersion from "@/components/OptionsVersion.vue";
+import CompositionVersion from "@/components/CompositionVersion.vue";
+import Modal from "@/components/Modal.vue";
+import { FolderInfo, data, FileInfo } from "@/models";
 
 @Component({
   components: {
-    Folder
-  }
+    OptionsVersion,
+    CompositionVersion,
+  },
 })
 export default class App extends Vue {
-  private rootFolder: FolderInfo = { ...data };
-  private filter: string = "";
+  private useOptions: boolean = true;
 
-  public get filteredFolderInfo(): FolderInfo {
-    return this.doFilter(this.rootFolder, this.filter);
+  public swapVersion() {
+    this.useOptions = !this.useOptions;
   }
 
-  private doFilter(folder: FolderInfo, filter: string): FolderInfo {
-    return {
-      name: folder.name,
-      folders: folder.folders
-        .map(x => this.doFilter(x, filter))
-        .filter(
-          x =>
-            x.name.includes(filter) ||
-            x.folders.length > 0 ||
-            x.files.length > 0
-        ),
-      files: folder.files.filter(x => x.name.toLowerCase().includes(filter.toLowerCase()))
-    };
+  public resetData() {
+    localStorage.setItem('folders', JSON.stringify(data));
+    location.reload();
   }
 }
 </script>
 
 <style>
-.folder-list {
-  list-style: none;
-  padding: 0;
-}
-.folder-list > li {
-  padding-left: 1.3em;
-}
-.folder-list > li:before {
-  font-family: "Font Awesome 5 Free";
-  display: inline-block;
-  margin-left: -1.3em;
-  width: 1.3em;
-}
-.folder-list > li.folder:before {
-  content: "\f07c";
-}
-.folder-list > li.file:before {
-  content: "\f15b";
-}
 </style>
