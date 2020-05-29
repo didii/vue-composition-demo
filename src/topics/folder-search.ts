@@ -6,10 +6,10 @@ import { Ref, ref, computed } from '@vue/composition-api';
  * @param rootFolder The folder to search through
  * @param filter Optionally a filter that was defined elsewhere or a starting value for the filter.
  */
-export function useFolderSearch(rootFolder: FolderInfo, filter?: Ref<string>) {
+export function useFolderSearch(rootFolder: Ref<FolderInfo>, filter?: Ref<string>) {
     let actualFilter: Ref<string> = filter ? filter : ref('');
     let filteredFolders = computed(() => {
-        return doFilter(rootFolder, actualFilter.value);
+        return doFilter(rootFolder.value, actualFilter.value);
     });
     return {
         filter: actualFilter,

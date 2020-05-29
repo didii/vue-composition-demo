@@ -78,7 +78,7 @@ export default defineComponent({
     };
 
     // Use folder search
-    let search = useFolderSearch(rootFolder.value);
+    let search = useFolderSearch(rootFolder);
 
     // Expose to the component
     return {
