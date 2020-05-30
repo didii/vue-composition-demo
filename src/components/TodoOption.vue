@@ -12,7 +12,13 @@
       <div v-for="todo of todos" :key="todo.title" class="row">
         <div class="col-12">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" :id="todo.title" :name="todo.title" :checked="todo.checked" />&nbsp;
+            <input
+              type="checkbox"
+              class="form-check-input"
+              :id="todo.title"
+              :name="todo.title"
+              v-model="todo.checked"
+            />&nbsp;
             <label class="form-check-label" :for="todo.title">{{todo.title}}</label>
           </div>
         </div>
@@ -22,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 
 interface Todo {
   checked: boolean;
@@ -33,6 +39,18 @@ interface Todo {
 export default class TodoOption extends Vue {
   private todos: Todo[] = [];
   private input: string = '';
+
+  public mounted() {
+    let stored = localStorage.getItem('todos');
+    if (stored) {
+      this.todos = JSON.parse(stored);
+    }
+  }
+
+  @Watch('todos', {deep: true})
+  public onTodoChanged(newTodos: Todo[]) {
+    localStorage.setItem('todos', JSON.stringify(newTodos));
+  }
 
   public addTodo(): void {
     this.todos.push({ checked: false, title: this.input });
