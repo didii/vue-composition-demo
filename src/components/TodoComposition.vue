@@ -33,22 +33,11 @@ import { useTodoManager, Todo, useLocalStorage, useSubmitIgnore } from '../topic
 
 export default defineComponent({
   setup() {
-    let input = ref('');
-
-    let todoManager = useTodoManager();
-    let addTodo = () => {
-      let todo: Todo = { checked: false, title: input.value };
-      todoManager.addTodo(todo);
-      input.value = '';
-    };
-
-    useLocalStorage('todos', todoManager.todos);
-
     return {
-      input: input,
-      todos: todoManager.todos,
-      addTodo: addTodo,
-      onSubmit: useSubmitIgnore(),
+      input: '',
+      todos: [],
+      addTodo: () => {},
+      onSubmit: () => {},
     };
   }
 })

@@ -1,10 +1,11 @@
 <template>
   <div id="app" class="container">
-    <!-- <button @click="swapVersion()" class="btn btn-primary">Swap</button>&nbsp;
+    <button @click="swapVersion()" class="btn btn-primary">Swap</button>&nbsp;
     <button @click="resetData()" class="btn btn-info">Reset</button>
     <options-version v-if="useOptions"></options-version>
-    <composition-version v-else></composition-version>-->
-    <todo-composition></todo-composition>
+    <composition-version v-else></composition-version>
+    <!-- <todo-option></todo-option> -->
+    <!-- <todo-composition></todo-composition> -->
   </div>
 </template>
 
