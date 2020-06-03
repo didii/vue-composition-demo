@@ -11,7 +11,7 @@ function filterFolder(folder: FolderInfo, filter: string): FolderInfo {
       .map(x => filterFolder(x, filter))
       .filter(
         x =>
-          x.name.includes(filter) ||
+          x.name.toLowerCase().includes(filter.toLowerCase()) ||
           x.folders.length > 0 ||
           x.files.length > 0
       ),
