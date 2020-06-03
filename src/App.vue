@@ -21,7 +21,7 @@ import Modal from "@/components/Modal.vue";
   },
 })
 export default class App extends Vue {
-  private useOptions: boolean = true;
+  private useOptions: boolean = false;
 
   public swapVersion() {
     this.useOptions = !this.useOptions;

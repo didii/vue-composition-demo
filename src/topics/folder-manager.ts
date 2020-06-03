@@ -1,11 +1,38 @@
 import { FileInfo, FolderInfo } from '@/models';
+import { Ref } from '@vue/composition-api';
 
 /**
  * Exposes functionality to add files and remove folders or files from the given parameter.
  * @param rootFolder The folder to manage
  */
-export function useFolderManager(rootFolder: FolderInfo) {
-    
+export function useFolderManager(rootFolder: Ref<FolderInfo>) {
+    let addFile = (file: FileInfo, to: FolderInfo) => {
+        let found = findFolder(rootFolder.value, to);
+        if (found) {
+            found.files.push(file);
+            found.files.sort((a, b) => a.name.localeCompare(b.name));
+        }
+    };
+
+    let deleteFile = (file: FileInfo) => {
+        let found = findParentFolderOfFile(rootFolder.value, file);
+        if (found) {
+            found.files = found.files.filter(x => x.name !== file.name);
+        }
+    };
+
+    let deleteFolder = (folder: FolderInfo) => {
+        let found = findParentFolderOfFolder(rootFolder.value, folder);
+        if (found) {
+            found.folders = found.folders.filter(x => x.name !== folder.name);
+        }
+    };
+
+    return {
+        addFile,
+        deleteFile,
+        deleteFolder,
+    };
 }
 
 function findFolder(root: FolderInfo, toFind: FolderInfo): FolderInfo | null {

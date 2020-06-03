@@ -31,7 +31,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { ref, reactive, defineComponent } from "@vue/composition-api";
 import { useFolderManager, useModal, useLocalStorage, useFolderSearch } from "@/topics";
-import { FolderInfo, FileInfo } from "@/models";
+import { FolderInfo, FileInfo, data } from "@/models";
 import Folder from "./Folder.vue";
 import Modal from "./Modal.vue";
 
@@ -41,22 +41,38 @@ export default defineComponent({
     Modal
   },
   setup() {
+    let rootFolder = ref<FolderInfo>(data);
+
+    // Use modal
+    let modal = useModal<string>();
+
+    // Use folder manager
+    let manager = useFolderManager(rootFolder);
+    let onUploadFile = (folder: FolderInfo) => {
+      modal.trigger().then(filename => manager.addFile({ name: filename }, folder));
+    };
+
+    // Use search
+    let search = useFolderSearch(rootFolder);
+
+    // Use local storage
+    useLocalStorage('folders', rootFolder);
 
     // Expose to the component
     return {
       // Setup
-      rootFolder: { name: 'root', folders: [], files: [] } as FolderInfo,
+      rootFolder: rootFolder,
       // Modal
-      showNewFileModal: false,
-      onAcceptModal: () => { },
-      onCancelModal: () => { },
+      showNewFileModal: modal.showModal,
+      onAcceptModal: modal.accept,
+      onCancelModal: modal.cancel,
       // Manager
-      onUploadFile: () => { },
-      onDeleteFile: () => { },
-      onDeleteFolder: () => { },
+      onUploadFile: onUploadFile,
+      onDeleteFile: manager.deleteFile,
+      onDeleteFolder: manager.deleteFolder,
       // Filter
-      filter: '',
-      filteredFolderInfo: { name: 'root', folders: [], files: [] } as FolderInfo,
+      filter: search.filter,
+      filteredFolderInfo: search.filteredFolders,
     };
   }
 });
