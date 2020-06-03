@@ -41,38 +41,21 @@ export default defineComponent({
     Modal
   },
   setup() {
-    let rootFolder = ref<FolderInfo>(data);
-
-    // Use modal
-    let modal = useModal<string>();
-
-    // Use folder manager
-    let manager = useFolderManager(rootFolder);
-    let onUploadFile = (folder: FolderInfo) => {
-      modal.trigger().then(filename => manager.addFile({ name: filename }, folder));
-    };
-
-    // Use search
-    let search = useFolderSearch(rootFolder);
-
-    // Use local storage
-    useLocalStorage('folders', rootFolder);
-
     // Expose to the component
     return {
       // Setup
-      rootFolder: rootFolder,
+      rootFolder: { name: 'root', folders: [], files: [] } as FolderInfo,
       // Modal
-      showNewFileModal: modal.showModal,
-      onAcceptModal: modal.accept,
-      onCancelModal: modal.cancel,
+      showNewFileModal: false,
+      onAcceptModal: () => {},
+      onCancelModal: () => {},
       // Manager
-      onUploadFile: onUploadFile,
-      onDeleteFile: manager.deleteFile,
-      onDeleteFolder: manager.deleteFolder,
+      onUploadFile: () => {},
+      onDeleteFile: () => {},
+      onDeleteFolder: () => {},
       // Filter
-      filter: search.filter,
-      filteredFolderInfo: search.filteredFolders,
+      filter: '',
+      filteredFolderInfo: { name: 'root', folders: [], files: [] } as FolderInfo,
     };
   }
 });
