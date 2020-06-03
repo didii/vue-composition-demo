@@ -12,7 +12,7 @@
           </div>
           <div class="modal-body">
             <p>Please enter a new filename</p>
-            <input type="text" v-model="filename" class="form-control" />
+            <input ref="input" type="text" v-model="filename" class="form-control" />
           </div>
           <div class="modal-footer">
             <button type="sumbit" @click="onCreateClicked()" class="btn btn-primary">Create</button>
@@ -25,11 +25,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Ref } from "vue-property-decorator";
 
 @Component
 export default class Modal extends Vue {
     private filename: string = '';
+    @Ref() private input!: HTMLInputElement;
+
+    public mounted() {
+      this.input.focus();
+    }
 
     public onCreateClicked(event?: Event) {
         if (event) {
