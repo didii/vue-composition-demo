@@ -7,12 +7,5 @@ import { Ref, watchEffect } from '@vue/composition-api';
  * @param value The value to save
  */
 export function useLocalStorage<T>(key: string, value: Ref<T>) {
-    let stored = localStorage.getItem(key);
-    if (stored) {
-        value.value = JSON.parse(stored) as T;
-    }
-
-    watchEffect(() => {
-        localStorage.setItem(key, JSON.stringify(value.value));
-    });
+    
 }

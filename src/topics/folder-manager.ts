@@ -5,30 +5,7 @@ import { FileInfo, FolderInfo } from '@/models';
  * @param rootFolder The folder to manage
  */
 export function useFolderManager(rootFolder: FolderInfo) {
-    let addFile = (file: FileInfo, to: FolderInfo) => {
-        let found = findFolder(rootFolder!, to);
-        if (found) {
-            found.files.push(file);
-            found.files.sort((a, b) => a.name.localeCompare(b.name));
-        }
-    }
-    let removeFile = (file: FileInfo) => {
-        let found = findParentFolderOfFile(rootFolder, file);
-        if (found) {
-            found.files = found.files.filter(x => x.name !== file.name);
-        }
-    }
-    let removeFolder = (folder: FolderInfo) => {
-        let found = findParentFolderOfFolder(rootFolder, folder);
-        if (found) {
-            found.folders = found.folders.filter(x => x.name !== folder.name);
-        }
-    }
-    return {
-        addFile,
-        removeFile,
-        removeFolder,
-    };
+    
 }
 
 function findFolder(root: FolderInfo, toFind: FolderInfo): FolderInfo | null {

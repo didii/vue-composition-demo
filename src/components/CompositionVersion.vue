@@ -41,60 +41,22 @@ export default defineComponent({
     Modal
   },
   setup() {
-    // Create data
-    let rootFolder = ref<FolderInfo>({
-      name: "Loading...",
-      folders: [],
-      files: [],
-    });
-
-    // Use persister to keep file structure in browser
-    useLocalStorage("folders", rootFolder);
-
-    // Use a modal
-    let modal = useModal<string>();
-    let onAcceptModal = (filename: string) => {
-      modal.accept(filename);
-    };
-    let onCancelModal = () => {
-      modal.cancel('');
-    }
-
-    // Use the folder manager
-    let manager = useFolderManager(rootFolder.value);
-    let onUploadFile = (folder: FolderInfo) => {
-      // on upload: show modal and add it if accepted
-      modal.trigger().then(x => {
-        if (x.accepted) {
-          manager.addFile({ name: x.payload }, folder);
-        }
-      });
-    };
-    let onDeleteFile = (file: FileInfo) => {
-      manager.removeFile(file);
-    };
-    let onDeleteFolder = (folder: FolderInfo) => {
-      manager.removeFolder(folder);
-    };
-
-    // Use folder search
-    let search = useFolderSearch(rootFolder);
 
     // Expose to the component
     return {
       // Setup
-      rootFolder,
+      rootFolder: { name: 'root', folders: [], files: [] } as FolderInfo,
       // Modal
-      showNewFileModal: modal.showModal,
-      onAcceptModal,
-      onCancelModal,
+      showNewFileModal: false,
+      onAcceptModal: () => { },
+      onCancelModal: () => { },
       // Manager
-      onUploadFile,
-      onDeleteFile,
-      onDeleteFolder,
+      onUploadFile: () => { },
+      onDeleteFile: () => { },
+      onDeleteFolder: () => { },
       // Filter
-      filter: search.filter,
-      filteredFolderInfo: search.filteredFolders,
+      filter: '',
+      filteredFolderInfo: { name: 'root', folders: [], files: [] } as FolderInfo,
     };
   }
 });
