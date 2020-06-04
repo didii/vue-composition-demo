@@ -1,7 +1,34 @@
 import { FileInfo, FolderInfo } from '@/models';
 
-export function useFolderManager() {
+export function useFolderManager(rootFolder: FolderInfo) {
+    let addFile = (file: FileInfo, to: FolderInfo) => {
+        let found = findFolder(rootFolder, to);
+        if (found) {
+            found.files.push(file);
+        }
+    };
 
+    let removeFile = (file: FileInfo) => {
+        let found = findParentFolderOfFile(rootFolder, file);
+        if (found) {
+            let index = found.files.findIndex(x => x.name === file.name);
+            found.files.splice(index, 1);
+        }
+    };
+
+    let removeFolder = (folder: FolderInfo) => {
+        let found = findParentFolderOfFolder(rootFolder, folder);
+        if (found) {
+            let index = found.folders.findIndex(x => x.name === folder.name);
+            found.folders.splice(index, 1);
+        };
+    };
+
+    return {
+        addFile,
+        removeFile,
+        removeFolder,
+    };
 }
 
 function findFolder(root: FolderInfo, toFind: FolderInfo): FolderInfo | null {
