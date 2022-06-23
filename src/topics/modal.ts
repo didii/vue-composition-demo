@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 
 /**
  * Exposes some configuration to show and hide a modal. Use trigger to show the modal

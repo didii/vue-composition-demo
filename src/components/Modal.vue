@@ -15,8 +15,9 @@
             <input ref="input" type="text" v-model="filename" class="form-control" />
           </div>
           <div class="modal-footer">
-            <button type="sumbit" @click="onCreateClicked()" class="btn btn-primary">Create</button>
-            <button type="button" @click="onCancelClicked()" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" @click="onCreateClicked()" class="btn btn-primary">Create</button>
+            <button type="button" @click="onCancelClicked()" class="btn btn-secondary"
+                    data-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>
@@ -25,28 +26,30 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from "vue-property-decorator";
+import { defineComponent } from 'vue';
 
-@Component
-export default class Modal extends Vue {
-    private filename: string = '';
-    @Ref() private input!: HTMLInputElement;
+const Modal = defineComponent({
+  data: () => ({
+    filename: '',
+  }),
+  mounted() {
+    (this.$refs.input as HTMLInputElement).focus();
+  },
+  methods: {
+    onCreateClicked(event?: Event) {
+      if (event) {
+        event.preventDefault();
+      }
+      this.$emit('onAccept', this.filename);
+      return false;
+    },
+    onCancelClicked() {
+      this.$emit('onCancel');
+    },
+  },
+});
 
-    public mounted() {
-      this.input.focus();
-    }
-
-    public onCreateClicked(event?: Event) {
-        if (event) {
-            event.preventDefault();
-        }
-        this.$emit('onAccept', this.filename);
-        return false;
-    }
-    public onCancelClicked() {
-        this.$emit('onCancel');
-    }
-}
+export default Modal;
 </script>
 
 <style scoped>

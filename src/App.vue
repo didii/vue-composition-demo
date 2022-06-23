@@ -8,30 +8,31 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import { FolderInfo, data, FileInfo } from "@/models";
-import OptionsVersion from "@/components/OptionsVersion.vue";
-import CompositionVersion from "@/components/CompositionVersion.vue";
-import Modal from "@/components/Modal.vue";
+import { data } from "@/models";
+import { defineComponent } from 'vue';
+import OptionsVersion from './components/OptionsVersion.vue';
+import CompositionVersion from './components/CompositionVersion.vue';
 
-@Component({
+const App = defineComponent({
   components: {
     OptionsVersion,
     CompositionVersion,
   },
-})
-export default class App extends Vue {
-  private useOptions: boolean = false;
+  data: () => ({
+    useOptions: false,
+  }),
+  methods: {
+    swapVersion() {
+      this.useOptions = !this.useOptions;
+    },
+    resetData() {
+      localStorage.setItem('folders', JSON.stringify(data));
+      location.reload();
+    },
+  },
+});
 
-  public swapVersion() {
-    this.useOptions = !this.useOptions;
-  }
-
-  public resetData() {
-    localStorage.setItem('folders', JSON.stringify(data));
-    location.reload();
-  }
-}
+export default App;
 </script>
 
 <style>

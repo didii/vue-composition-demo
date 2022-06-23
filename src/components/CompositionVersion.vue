@@ -28,8 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import { ref, reactive, defineComponent } from "@vue/composition-api";
+import { ref, reactive, defineComponent } from "vue";
 import { useFolderManager, useModal, useLocalStorage, useFolderSearch } from "@/topics";
 import { FolderInfo, FileInfo, data } from "@/models";
 import Folder from "./Folder.vue";
@@ -47,12 +46,12 @@ export default defineComponent({
       rootFolder: { name: 'root', folders: [], files: [] } as FolderInfo,
       // Modal
       showNewFileModal: false,
-      onAcceptModal: () => {},
+      onAcceptModal: (payload: any) => {},
       onCancelModal: () => {},
       // Manager
-      onUploadFile: () => {},
-      onDeleteFile: () => {},
-      onDeleteFolder: () => {},
+      onUploadFile: (file: FileInfo) => {},
+      onDeleteFile: (file: FileInfo) => {},
+      onDeleteFolder: (file: FileInfo) => {},
       // Filter
       filter: '',
       filteredFolderInfo: { name: 'root', folders: [], files: [] } as FolderInfo,
